@@ -11,8 +11,6 @@ local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
-
-
 -- [ TABS ] --
 
 local MainTAB = Windows:Tab("Main")
