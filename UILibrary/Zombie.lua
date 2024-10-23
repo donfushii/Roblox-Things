@@ -171,6 +171,14 @@ end
 
 -- [ AUTOFARM LOGIC ] --
 
+local originalWalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local originalJumpPower = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+
+local function restoreDefaultSettings()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = originalWalkSpeed
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = originalJumpPower
+end
+
 _G.globalTarget = nil
 game:GetService("RunService").RenderStepped:Connect(function()
 	if _G.AutoFarm then
@@ -180,13 +188,19 @@ game:GetService("RunService").RenderStepped:Connect(function()
 			Player.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
 			_G.globalTarget = target
 		end
+	else
+		restoreDefaultSettings()
 	end
 end)
 
 spawn(function()
 	while wait() do
-		Player.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-		Player.Character.Torso.Velocity = Vector3.new(0, 0, 0)
+		if _G.AutoFarm then
+			Player.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+			Player.Character.Torso.Velocity = Vector3.new(0, 0, 0)
+		else
+			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+		end
 	end
 end)
 
