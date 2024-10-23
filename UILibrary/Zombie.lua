@@ -24,8 +24,7 @@ local CreditsTAB = Windows:Tab("Credits")
 
 local Players = game:GetService("Players")
 local plr = Players.LocalPlayer
-local player = Players.LocalPlayer
-local humanoid = plr.Character.Humanoid
+local humanoid = plr.Character and plr.Character:FindFirstChild("Humanoid")
 
 
 
@@ -152,13 +151,13 @@ end
 local function getNearest()
     local nearest, dist = nil, _G.ZombieDist
 
-    if not player.Character or not player.Character:FindFirstChild("Head") then
+    if not Player.Character or not Player.Character:FindFirstChild("Head") then
         return nil
     end
 
     for _, v in pairs(game.Workspace.BossFolder:GetChildren()) do
         if v:FindFirstChild("Head") then
-            local m = (player.Character.Head.Position - v.Head.Position).magnitude
+            local m = (Player.Character.Head.Position - v.Head.Position).magnitude
             if m < dist then
                 dist = m
                 nearest = v
@@ -168,7 +167,7 @@ local function getNearest()
 
     for _, v in pairs(game.Workspace.enemies:GetChildren()) do
         if v:FindFirstChild("Head") then
-            local m = (player.Character.Head.Position - v.Head.Position).magnitude
+            local m = (Player.Character.Head.Position - v.Head.Position).magnitude
             if m < dist then
                 dist = m
                 nearest = v
@@ -187,7 +186,7 @@ spawn(function()
             if target and target:FindFirstChild("Head") then
                 game.Workspace.CurrentCamera.CFrame = CFrame.new(
                     game.Workspace.CurrentCamera.CFrame.Position, target.Head.Position)
-					player.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
+                Player.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
             end
         end
         wait(0.1)
