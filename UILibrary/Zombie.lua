@@ -186,11 +186,18 @@ spawn(function()
         if _G.AutoFarm then
             local target = getNearest()
             if target and target:FindFirstChild("Head") then
-                game:GetService("Workspace").CurrentCamera.CFrame = CFrame.new(game:GetService("Workspace").CurrentCamera.CFrame.p, target.Head.Position)
+                game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Workspace.CurrentCamera.CFrame.Position, target.Head.Position)
                 Player.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
             end
         end
         wait(0.1)
+    end
+end)
+
+spawn(function()
+    while wait() do
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+        game.Players.LocalPlayer.Character.Torso.Velocity = Vector3.new(0,0,0)
     end
 end)
 
