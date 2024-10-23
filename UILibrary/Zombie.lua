@@ -9,7 +9,7 @@ Copyright (C) 2024 github.com/donfushii
 local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/donfushii/Roblox-Things/main/UILibrary/Imperium"))()
 
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
-local uiContainer = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("Imperium")
+local uiContainer = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChildOfClass("Imperium")
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
 -- [ NUEVO BOTÓN FLOTANTE ] --
@@ -31,9 +31,15 @@ ImperiumButton.TextScaled = true
 -- [ FUNCIÓN DE MOSTRAR / OCULTAR UI ] --
 local isVisible = true
 
-ToggleButton.MouseButton1Click:Connect(function()
+ImperiumButton.MouseButton1Click:Connect(function()
     isVisible = not isVisible
     uiContainer.Enabled = isVisible -- Oculta o muestra todo el GUI contenedor
+
+    if isVisible then
+        ToggleButton.Text = "Hide UI"
+    else
+        ToggleButton.Text = "Show UI"
+    end
 end)
 
 -- [ TABS ] --
