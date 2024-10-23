@@ -25,21 +25,14 @@ ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
 ToggleButton.Text = "Show UI"
 ToggleButton.TextScaled = true -- Ajustar el texto al tamaño del botón
 
--- [ FUNCIÓN DE MOSTRAR / OCULTAR UI ] --
-local isVisible = true -- Estado inicial de visibilidad
-
--- [ REFERENCIA AL GUI PRINCIPAL ] --
-local uiContainer = Windows -- Aquí se usa la referencia directa a la ventana creada por ImperiumLib
+local uiContainer = Windows
+Windows = true
 
 ToggleButton.MouseButton1Click:Connect(function()
-    isVisible = not isVisible -- Cambiar estado
-    uiContainer.Enabled = isVisible -- Ocultar o mostrar la UI
-
-    -- Cambiar el texto del botón según el estado
-    if isVisible then
-        ToggleButton.Text = "Hide UI"
-    else
-        ToggleButton.Text = "Show UI"
+    if Toggled == true then
+        Toggled = false
+    elseif Toggled == false then
+        Toggled = true
     end
 end)
 
