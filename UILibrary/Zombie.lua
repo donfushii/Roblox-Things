@@ -8,7 +8,7 @@ Copyright (C) 2024 github.com/donfushii
 
 local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/donfushii/Roblox-Things/main/UILibrary/Imperium"))()
 
-local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(255, 102, 178), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
+local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
 -- [ TABS ] --
@@ -30,31 +30,14 @@ local humanoid = plr.Character.Humanoid
 
 
 
--- [ TOGGLE'S ] --
+-- [ SETTING'S ] --
 
-if _G.Settings == true then
-	_G.AutoFarm = false
-	_G.AutoEquip = false
-	_G.AutoGetPowerups = false
-
-	_G.GroundDistance = 15 -- [ AutoFarm Up / Down ] --
-	_G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
-	_G.HeadSize = 3 -- [ HITBOX ] --
-	
-	elseif _G.Settings == false then
-	  Settings()
-	end
-	
-	local function Settings()
-	_G.AutoFarm = false
-	_G.AutoEquip = false
-	_G.AutoGetPowerups = false
-
-	_G.GroundDistance = 0 -- [ AutoFarm Up / Down ] --
-	_G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
-	_G.HeadSize = 3 -- [ HITBOX ] --
-end
-
+_G.AutoFarm = false
+_G.AutoEquip = false
+_G.AutoGetPowerups = false
+_G.GroundDistance = 0 -- [ Ground Distance: UP / DOWN ] --
+_G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
+_G.HeadSize = 3 -- [ HITBOX ] --
 
 
 
@@ -64,38 +47,23 @@ local function SendNotify(title, message, duration)
 	game:GetService("StarterGui"):SetCore("SendNotification", {Title = title, Text = message, Duration = duration;})
 end
 
+local function Settings()
+    _G.AutoFarm = false
+    _G.AutoEquip = false
+    _G.AutoGetPowerups = false
+end
 
 
 
--- [ TAB #1 ] --
+
+-- [ TAB #1  -  MAIN ] --
 
 MainTAB:Button("📍 ・ Anti AFK", function()
-	wait(0.5)
-		local ba=Instance.new("ScreenGui")
-		local ca=Instance.new("TextLabel")local da=Instance.new("Frame")
-		local _b=Instance.new("TextLabel")local ab=Instance.new("TextLabel")ba.Parent=game.CoreGui
-
-			ba.ZIndexBehavior=Enum.ZIndexBehavior.Sibling;ca.Parent=ba;ca.Active=true
-			ca.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)ca.Draggable=true
-			ca.Position=UDim2.new(0.698610067,0,0.098096624,0)ca.Size=UDim2.new(0,0,0,0)
-			ca.Font=Enum.Font.SourceSansSemibold;ca.Text=""ca.TextColor3=Color3.new(0,1,1)
-			ca.TextSize=22;da.Parent=ca
-			da.BackgroundColor3=Color3.new(0.196078,0.196078,0.196078)da.Position=UDim2.new(0,0,1.0192306,0)
-			da.Size=UDim2.new(0,0,0,0)_b.Parent=da
-			_b.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)_b.Position=UDim2.new(0,0,0.800455689,0)
-			_b.Size=UDim2.new(0,0,0,0)_b.Font=Enum.Font.Arial;_b.Text=""
-			_b.TextColor3=Color3.new(0,1,1)_b.TextSize=20;ab.Parent=da
-			ab.BackgroundColor3=Color3.new(0.176471,0.176471,0.176471)ab.Position=UDim2.new(0,0,0.158377,0)
-			ab.Size=UDim2.new(0,0,0,0)ab.Font=Enum.Font.ArialBold;ab.Text=""
-
-		ab.TextColor3=Color3.new(0,1,1)ab.TextSize=20;local bb=game:service'VirtualUser'
-		game:service'Players'.LocalPlayer.Idled:connect(function()
-		bb:CaptureController()bb:ClickButton2(Vector2.new())
-	ab.Text=""wait(2)ab.Text=""end)
-
-	wait(0.1)
-
-	game.StarterGui:SetCore("SendNotification", {Title = "[Notification]", Text = "Anti AFK Enabled!", Duration = 5, })
+	game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        game:GetService("VirtualUser"):CaptureController()
+        game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    end)
+    SendNotify("[Notification]", "Anti AFK Enabled!", 5)
 end)
 
 
@@ -117,27 +85,30 @@ end)
 
 
 
--- [ TAB #2 ] --
+-- [ TAB #2  -  COMBAT ] --
+
+CombatTAB:Textbox("📌 ・ Ground Distance", true, function(value)
+	_G.GroundDistance = tonumber(value)
+end)
 
 CombatTAB:Textbox("📌 ・ Set Hitbox", true, function(value)
 	_G.HeadSize = tonumber(value)
 end)
 
-CombatTAB:Textbox("📌 ・ Ground Distance [Y]", true, function(value)
-	_G.GroundDistance = tonumber(value)
+CombatTAB:Slider("📌 ・ Set WalkSpeed", 5, 500, 16, function(value)
+	game:GetService('Players').LocalPlayer.Character.Humanoid.WalkSpeed = value
 end)
 
-CombatTAB:Textbox("📌 ・ Ground Distance [X]", true, function(value)
-	_G.GroundDistance = tonumber(value)
+CombatTAB:Slider("📌 ・ Set JumpPower", 5, 500, 50, function(value)
+	game:GetService('Players').LocalPlayer.Character.Humanoid.JumpPower = value
 end)
 
---[[CombatTAB:Textbox("📌 ・ Search Zombie Dist [100000]", true, function(value)
+--[[
+CombatTAB:Textbox("📌 ・ Search Zombie Dist [100000]", true, function(value)
 	_G.ZombieDist = tonumber(value)
 end)
 ]]
 
-
--- [[                                                                                                        ]] --
 
 
 -- [ HITBOX CONFIG ] --
@@ -248,10 +219,8 @@ spawn(function()
 end)
 
 
--- [[                                                                                                        ]] --
 
-
--- [ TAB #3 ] --
+-- [ TAB #3  -  CRATES ] --
 
 CratesTAB:Button("📍 ・ Open Crate #1 [1 KEY]", function()
 	local args = {
@@ -310,7 +279,7 @@ end)
 
 
 
--- [ TAB #4 ] --
+-- [ TAB #4  -  CREDITS ] --
 
 CreditsTAB:Label("・ Owner   :  @donfushii")
 CreditsTAB:Label("・ Tester    :  @ImperiumClothes")
@@ -319,6 +288,6 @@ CreditsTAB:Button("📍 ・ Copy Discord", function()
 	setclipboard("discord.gg/UBcYG3sA")
 end)
 
-CreditsTAB:Colorpicker("📍 ・ UI Color",Color3.fromRGB(44, 120, 224), function(t)
+CreditsTAB:Colorpicker("📍 ・ UI Color", Color3.fromRGB(245, 102, 154), function(t)
     ImperiumLib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
 end)
