@@ -41,8 +41,6 @@ _G.GroundDistance = 0 -- [ Ground Distance: UP / DOWN ] --
 _G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
 _G.HeadSize = 3 -- [ HITBOX ] --
 
-_G.IsVPressed = false
-
 
 
 -- [ FUNCTION'S ] --
@@ -84,31 +82,6 @@ end)
 
 MainTAB:Toggle("📌 ・ Auto Equip Guns", false, function(bool)	
 	_G.AutoEquip = bool
-end)
-
--- [ BOTÓN PARA SIMULAR TECLA 'V' ] --
-local ScreenGui = Instance.new("ScreenGui")
-local KeyVButton = Instance.new("TextButton")
-
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false -- Evita que el GUI se reinicie al reaparecer
-
-KeyVButton.Parent = ScreenGui
-KeyVButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224) -- Color del botón
-KeyVButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Color del texto
-KeyVButton.Size = UDim2.new(0, 100, 0, 50) -- Tamaño del botón
-KeyVButton.Position = UDim2.new(0, 10, 0.2, 0) -- Posición del botón
-KeyVButton.Text = "Toggle V" -- Texto del botón
-KeyVButton.TextScaled = true -- Ajustar el texto al tamaño del botón
-
--- Función para activar/desactivar el estado de la tecla "V"
-KeyVButton.MouseButton1Click:Connect(function()
-    _G.IsVPressed = not _G.IsVPressed -- Cambia el estado
-    if _G.IsVPressed then
-        SendNotify("[Notification]", "Tecla 'V' Activada!", 2)
-    else
-        SendNotify("[Notification]", "Tecla 'V' Desactivada!", 2)
-    end
 end)
 
 
