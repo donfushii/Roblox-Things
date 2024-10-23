@@ -9,7 +9,7 @@ Copyright (C) 2024 github.com/donfushii
 local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/donfushii/Roblox-Things/main/UILibrary/Imperium"))()
 
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
-local mainUI = Windows.Frame
+local uiContainer = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ImperiumUI")
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
 -- [ NUEVO BOTÓN FLOTANTE ] --
@@ -18,13 +18,13 @@ local ScreenGui = Instance.new("ScreenGui")
 local ToggleButton = Instance.new("TextButton")
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false -- Para que no se reinicie al morir
+ScreenGui.ResetOnSpawn = false -- Evita que el GUI se reinicie al reaparecer
 
 ToggleButton.Parent = ScreenGui
 ToggleButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224)
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-ToggleButton.Position = UDim2.new(0, 10, 0.5, -25)
+ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamaño del botón
+ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
 ToggleButton.Text = "UI"
 ToggleButton.TextScaled = true
 
@@ -33,11 +33,7 @@ local isVisible = true
 
 ToggleButton.MouseButton1Click:Connect(function()
     isVisible = not isVisible
-    if mainUI then
-        mainUI.Visible = isVisible -- Alternar la visibilidad
-    else
-        warn("No se encontró la referencia al Frame principal de la UI")
-    end
+    uiContainer.Enabled = isVisible -- Oculta o muestra todo el GUI contenedor
 end)
 
 -- [ TABS ] --
