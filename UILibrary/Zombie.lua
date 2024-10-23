@@ -164,13 +164,21 @@ spawn(function()
 		if _G.AutoFarm then
 			local target = getNearest()
 			if target and target:FindFirstChild("Head") then
-				game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Workspace.CurrentCamera.CFrame.Position, target.Head.Position)
-				if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-					plr.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
+				local targetPosition = target.HumanoidRootPart.Position
+
+				-- Mueve la cámara suavemente hacia el objetivo
+				game.Workspace.CurrentCamera.CFrame = CFrame.new(game.Workspace.CurrentCamera.CFrame.Position, targetPosition)
+
+				if plr.Character and plr.Character:FindFirstChild("Humanoid") and plr.Character:FindFirstChild("HumanoidRootPart") then
+					-- Teletransporta al personaje al objetivo con un pequeño offset
+					plr.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition + Vector3.new(0, _G.GroundDistance, 9))
+
+					-- Agrega un pequeño tiempo de espera después de mover
+					wait(0.1)
 				end
 			end
 		end
-		wait(0.1)
+		wait(0.1) -- Intervalo de espera para evitar sobrecargar el bucle
 	end
 end)
 
