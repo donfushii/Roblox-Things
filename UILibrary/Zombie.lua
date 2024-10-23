@@ -20,19 +20,24 @@ ScreenGui.ResetOnSpawn = false -- Evita que el GUI se reinicie al reaparecer
 ToggleButton.Parent = ScreenGui
 ToggleButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224) -- Color del botón
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Color del texto
-ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamaño del botón
+ToggleButton.Size = UDim2.new(0, 30, 0, 30) -- Tamaño del botón
 ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
 ToggleButton.Text = "Show UI"
 ToggleButton.TextScaled = true -- Ajustar el texto al tamaño del botón
 
 local uiContainer = Windows
-Windows = true
+local isVisible = true
 
 ToggleButton.MouseButton1Click:Connect(function()
-    if Toggled == true then
-        Toggled = false
-    elseif Toggled == false then
-        Toggled = true
+    -- Alternar el estado de visibilidad
+    isVisible = not isVisible
+    uiContainer.Enabled = isVisible -- Ocultar o mostrar la UI
+
+    -- Cambiar el texto del botón según el estado
+    if isVisible then
+        ToggleButton.Text = "OFF" -- Si la UI es visible, mostrar "OFF"
+    else
+        ToggleButton.Text = "ON" -- Si la UI no es visible, mostrar "ON"
     end
 end)
 
