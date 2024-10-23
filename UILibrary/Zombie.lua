@@ -21,6 +21,8 @@ local CreditsTAB = Windows:Tab("Credits")
 
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
+local ImperiumBrick = Color3.fromRGB(245, 102, 154)
+local ImperiumColor = BrickColor.new(ImperiumBrick)
 
 -- [ SETTINGS ] --
 
@@ -83,6 +85,8 @@ CombatTAB:Slider("📌 ・ Set JumpPower", 5, 500, 50, function(value)
 	Player.Character.Humanoid.JumpPower = tonumber(value) or 50
 end)
 
+
+
 -- [ HITBOX CONFIG ] --
 
 local function modifyHitbox()
@@ -93,7 +97,7 @@ local function modifyHitbox()
 				local humanoidRootPart = v.HumanoidRootPart
 				humanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
 				humanoidRootPart.Material = "Neon"
-				humanoidRootPart.BrickColor = BrickColor.new("Really blue")
+				humanoidRootPart.BrickColor = ImperiumColor
 				humanoidRootPart.Transparency = 0.92
 				humanoidRootPart.CanCollide = false
 			end
@@ -202,6 +206,8 @@ spawn(function()
 		end
 	end
 end)
+
+
 
 -- [ TAB #3 - CRATES ] --
 
