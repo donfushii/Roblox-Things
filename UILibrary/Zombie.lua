@@ -198,6 +198,7 @@ spawn(function()
 		if _G.AutoFarm then
 			Player.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
 			Player.Character.Torso.Velocity = Vector3.new(0, 0, 0)
+			Player.Character.Humanoid.Sit = false
 		else
 			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
 		end
