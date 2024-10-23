@@ -9,6 +9,7 @@ Copyright (C) 2024 github.com/donfushii
 local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/donfushii/Roblox-Things/main/UILibrary/Imperium"))()
 
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
+local mainUI = Windows.Frame
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
 -- [ NUEVO BOTÓN FLOTANTE ] --
@@ -22,18 +23,21 @@ ScreenGui.ResetOnSpawn = false -- Para que no se reinicie al morir
 ToggleButton.Parent = ScreenGui
 ToggleButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224)
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamaño del botón
-ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Botón en el costado izquierdo
+ToggleButton.Size = UDim2.new(0, 50, 0, 50)
+ToggleButton.Position = UDim2.new(0, 10, 0.5, -25)
 ToggleButton.Text = "UI"
 ToggleButton.TextScaled = true
 
 -- [ FUNCIÓN DE MOSTRAR / OCULTAR UI ] --
-
-local isVisible = true -- Estado inicial de la UI
+local isVisible = true
 
 ToggleButton.MouseButton1Click:Connect(function()
     isVisible = not isVisible
-    Windows.Frame.Visible = isVisible -- Oculta o muestra la ventana principal
+    if mainUI then
+        mainUI.Visible = isVisible -- Alternar la visibilidad
+    else
+        warn("No se encontró la referencia al Frame principal de la UI")
+    end
 end)
 
 -- [ TABS ] --
