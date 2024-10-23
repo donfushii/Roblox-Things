@@ -114,7 +114,18 @@ end)
 
 local function modifyHitbox()
     local enemies = workspace.enemies:GetChildren()
-    for _, v in pairs(enemies) do
+    for _, v in ipairs(enemies) do
+        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
+            v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+            v.HumanoidRootPart.Material = "Neon"
+            v.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+            v.HumanoidRootPart.Transparency = 0.92
+            v.HumanoidRootPart.CanCollide = false
+        end
+    end
+
+    local bosses = game.Workspace.BossFolder:GetChildren()
+    for _, v in ipairs(bosses) do
         if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
             v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
             v.HumanoidRootPart.Material = "Neon"
@@ -124,6 +135,13 @@ local function modifyHitbox()
         end
     end
 end
+
+spawn(function()
+    while true do
+        modifyHitbox()
+        wait(0.1)
+    end
+end)
 
 -- [ AUTOEQUIP CONFIG ] --
 
@@ -138,26 +156,42 @@ local function autoEquip()
     end
 end
 
+spawn(function()
+    while true do
+        if _G.AutoEquip then
+            autoequip()
+        end
+        wait(0.1)
+    end
+end)
+
 -- [ GETPOWERUPS CONFIG ] --
 
-local function autoGetPowerups()
-    for _, v in pairs(workspace.Powerups:GetChildren()) do
-        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Part, 0)
-    end
-end
+local function autogetpowerupscript()
+	powerups = game.workspace.Powerups
+	print(powerups)
+	for i,v in pairs(powerups:GetChildren()) do 
+	print(v.Part.TouchInterest)
+	firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.Part,0)
+		end
+	end
+	
+	spawn(function()
+		while true do
+			if _G.AutoGetPowerups then
+				autogetpowerupscript()
+			end
+			wait(0.1)
+		end
+	end)
 
 -- [ ZOMBIE DETECTION ] --
 
 local Player = game:GetService("Players").LocalPlayer
 
 local function getNearest()
-    local nearest, dist = nil, _G.ZombieDist
-
-    if not Player.Character or not Player.Character:FindFirstChild("Head") then
-        return nil
-    end
-
-    for _, v in pairs(game.Workspace.BossFolder:GetChildren()) do
+    local nearest, dist = nil, _G.dist
+    for _,v in pairs(game.Workspace.BossFolder:GetChildren()) do
         if v:FindFirstChild("Head") then
             local m = (Player.Character.Head.Position - v.Head.Position).magnitude
             if m < dist then
@@ -166,8 +200,7 @@ local function getNearest()
             end
         end
     end
-
-    for _, v in pairs(game.Workspace.enemies:GetChildren()) do
+    for _,v in pairs(game.Workspace.enemies:GetChildren()) do
         if v:FindFirstChild("Head") then
             local m = (Player.Character.Head.Position - v.Head.Position).magnitude
             if m < dist then
@@ -181,43 +214,41 @@ end
 
 -- [ AUTOFARM LOGIC ] --
 
-spawn(function()
-    while true do
-        if _G.AutoFarm then
-            local target = getNearest()
-            if target and target:FindFirstChild("Head") then
-                game.Workspace.CurrentCamera.CFrame = CFrame.new(
-                    game.Workspace.CurrentCamera.CFrame.Position, 
-                    target.Head.Position
-                )
-                Player.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9)
-            end
+_G.globalTarget = nil
+game:GetService("RunService").RenderStepped:Connect(function()
+    if _G.farm2 == true then
+        local target = getNearest()
+        if target and target:FindFirstChild("Head") then
+            game:GetService("Workspace").CurrentCamera.CFrame = CFrame.new(game:GetService("Workspace").CurrentCamera.CFrame.p, target.Head.Position)
+            Player.Character.HumanoidRootPart.CFrame =
+            (target.HumanoidRootPart.CFrame * CFrame.new(0, _G.groundDistance, 9))
+            _G.globalTarget = target
         end
-        wait(0.1)
     end
 end)
 
--- [ AUTOEQUIP LOOP ] --
-
-spawn(function()
-    while true do
-        if _G.AutoEquip then
-            autoEquip()
-        end
-        wait(0.1)
+spawn(function() -- Player Velocity
+    while wait() do
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+        game.Players.LocalPlayer.Character.Torso.Velocity = Vector3.new(0,0,0)
     end
 end)
 
--- [ GET POWERUPS LOOP ] --
-
-spawn(function()
-    while true do
-        if _G.AutoGetPowerups then
-            autoGetPowerups()
-        end
-        wait(0.1)
-    end
-end)
+while wait() do -- _G. == true and _G. ~= nil (zombie) FindFirstChild Head (Zombie)
+    if _G.farm2 == true and _G.globalTarget ~= nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool") then -- Script
+        local target = _G.globalTarget -- _G.
+        game.ReplicatedStorage.Gun:FireServer({ -- Event
+            ["Normal"] = Vector3.new(0, 0, 0), -- Vector3
+            ["Direction"] = target.Head.Position, -- Position
+            ["Name"] = Player.Character:FindFirstChildOfClass("Tool").Name, -- Tool Player
+            ["Hit"] = target.Head, -- HeadShot
+            ["Origin"] = target.Head.Position, -- Position Head
+            ["Pos"] = target.Head.Position, -- Position Head
+        }) -- close
+        wait() -- wait
+  end
+ end
+end
 
 
 
