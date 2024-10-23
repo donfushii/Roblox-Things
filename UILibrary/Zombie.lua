@@ -11,35 +11,28 @@ local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
+
+-- [ BOTÓN PARA SIMULAR TECLA 'V' ] --
 local ScreenGui = Instance.new("ScreenGui")
-local ToggleButton = Instance.new("TextButton")
+local KeyVButton = Instance.new("TextButton")
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false -- Evita que el GUI se reinicie al reaparecer
 
-ToggleButton.Parent = ScreenGui
-ToggleButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224) -- Color del botón
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Color del texto
-ToggleButton.Size = UDim2.new(0, 30, 0, 30) -- Tamaño del botón
-ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
-ToggleButton.Text = "Show UI"
-ToggleButton.TextScaled = true -- Ajustar el texto al tamaño del botón
+KeyVButton.Parent = ScreenGui
+KeyVButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224) -- Color del botón
+KeyVButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Color del texto
+KeyVButton.Size = UDim2.new(0, 100, 0, 50) -- Tamaño del botón
+KeyVButton.Position = UDim2.new(0, 10, 0.2, 0) -- Posición del botón
+KeyVButton.Text = "Simular V" -- Texto del botón
+KeyVButton.TextScaled = true -- Ajustar el texto al tamaño del botón
 
-local uiContainer = Windows
-local isVisible = true
-
-ToggleButton.MouseButton1Click:Connect(function()
-    -- Alternar el estado de visibilidad
-    isVisible = not isVisible
-    uiContainer.Enabled = isVisible -- Ocultar o mostrar la UI
-
-    -- Cambiar el texto del botón según el estado
-    if isVisible then
-        ToggleButton.Text = "OFF" -- Si la UI es visible, mostrar "OFF"
-    else
-        ToggleButton.Text = "ON" -- Si la UI no es visible, mostrar "ON"
-    end
+-- Función para simular la pulsación de la tecla "V"
+KeyVButton.MouseButton1Click:Connect(function()
+    local UserInputService = game:GetService("UserInputService")
+    UserInputService.InputBegan:Fire({UserInputType = Enum.UserInputType.Keyboard, KeyCode = Enum.KeyCode.V}) -- Simular la tecla "V"
 end)
+
 
 -- [ TABS ] --
 
