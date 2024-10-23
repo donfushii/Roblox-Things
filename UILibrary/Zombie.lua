@@ -95,11 +95,11 @@ CombatTAB:Textbox("📌 ・ Set Hitbox", true, function(value)
 end)
 
 CombatTAB:Slider("📌 ・ Set WalkSpeed", 5, 500, 16, function(value)
-	game:GetService('Players').LocalPlayer.Character.Humanoid.WalkSpeed = value
+	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = tonumber(value)
 end)
 
 CombatTAB:Slider("📌 ・ Set JumpPower", 5, 500, 50, function(value)
-	game:GetService('Players').LocalPlayer.Character.Humanoid.JumpPower = value
+	game.Players.LocalPlayer.Character.Humanoid.JumpPower = tonumber(value)
 end)
 
 --[[
