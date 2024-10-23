@@ -37,7 +37,7 @@ if _G.Settings == true then
 	_G.AutoEquip = false
 	_G.AutoGetPowerups = false
 
-	_G.GroundDistance = 0 -- [ AutoFarm Up / Down ] --
+	_G.GroundDistance = 15 -- [ AutoFarm Up / Down ] --
 	_G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
 	_G.HeadSize = 3 -- [ HITBOX ] --
 	
@@ -119,7 +119,7 @@ end)
 
 -- [ TAB #2 ] --
 
-CombatTAB:Textbox("📌 ・ Hitbox [3]", true, function(value)
+CombatTAB:Textbox("📌 ・ Set Hitbox", true, function(value)
 	_G.HeadSize = tonumber(value)
 end)
 
@@ -131,11 +131,16 @@ CombatTAB:Textbox("📌 ・ Ground Distance [X]", true, function(value)
 	_G.GroundDistance = tonumber(value)
 end)
 
-CombatTAB:Textbox("📌 ・ Search Zombie Dist [100000]", true, function(value)
+--[[CombatTAB:Textbox("📌 ・ Search Zombie Dist [100000]", true, function(value)
 	_G.ZombieDist = tonumber(value)
 end)
+]]
 
--- [ COMBAT TOGGLE CONFIG ] --
+
+-- [[                                                                                                        ]] --
+
+
+-- [ HITBOX CONFIG ] --
 
 local function modifyHitbox()
     local enemies = workspace.enemies:GetChildren()
@@ -150,6 +155,8 @@ local function modifyHitbox()
     end
 end
 
+-- [ AUTOEQUIP CONFIG ] --
+
 local function autoEquip()
     local player = game.Players.LocalPlayer
     local backpack = player.Backpack
@@ -161,13 +168,15 @@ local function autoEquip()
     end
 end
 
+-- [ GETPOWERUPS CONFIG ] --
+
 local function autoGetPowerups()
     for _, v in pairs(workspace.Powerups:GetChildren()) do
         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Part, 0)
     end
 end
 
--- [ Nearest Zombie Detection ] --
+-- [ ZOMBIE DETECTION ] --
 
 local function getNearest()
     local nearest, dist = nil, _G.ZombieDist
@@ -198,7 +207,7 @@ local function getNearest()
     return nearest
 end
 
--- [ AutoFarm Logic ] --
+-- [ AUTOFARM LOGIC ] --
 
 spawn(function()
     while true do
@@ -216,7 +225,7 @@ spawn(function()
     end
 end)
 
--- [ Auto Equip Loop ] --
+-- [ AUTOEQUIP LOOP ] --
 
 spawn(function()
     while true do
@@ -227,7 +236,7 @@ spawn(function()
     end
 end)
 
--- [ Auto Get Powerups Loop ] --
+-- [ GET POWERUPS LOOP ] --
 
 spawn(function()
     while true do
@@ -239,6 +248,7 @@ spawn(function()
 end)
 
 
+-- [[                                                                                                        ]] --
 
 
 -- [ TAB #3 ] --
