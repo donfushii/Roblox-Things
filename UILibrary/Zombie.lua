@@ -18,16 +18,9 @@ local CombatTAB = Windows:Tab("Combat")
 local CratesTAB = Windows:Tab("Crates")
 local CreditsTAB = Windows:Tab("Credits")
 
-
-
 -- [ VARIABLE'S ] --
 
 local Players = game:GetService("Players")
-local plr = Players.LocalPlayer
-local humanoid = plr.Character and plr.Character:FindFirstChild("Humanoid")
-
-
-
 
 -- [ SETTING'S ] --
 
@@ -37,8 +30,6 @@ _G.AutoGetPowerups = false
 _G.GroundDistance = 0 -- [ Ground Distance: UP / DOWN ] --
 _G.ZombieDist = 100000 -- [ Search Zombie Distance ] --
 _G.HeadSize = 3 -- [ HITBOX ] --
-
-
 
 -- [ FUNCTION'S ] --
 
@@ -64,10 +55,6 @@ MainTAB:Button("📍 ・ Anti AFK", function()
     end)
     SendNotify("[Notification]", "Anti AFK Enabled!", 5)
 end)
-
-
----- [ ] ----
-
 
 MainTAB:Toggle("📌 ・ Auto Farm", false, function(bool)
 	_G.AutoFarm = bool
@@ -190,7 +177,7 @@ local function autogetpowerupscript()
 local Player = game:GetService("Players").LocalPlayer
 
 local function getNearest()
-    local nearest, dist = nil, _G.dist
+    local nearest, dist = nil, _G.ZombieDist
     for _,v in pairs(game.Workspace.BossFolder:GetChildren()) do
         if v:FindFirstChild("Head") then
             local m = (Player.Character.Head.Position - v.Head.Position).magnitude
@@ -216,36 +203,36 @@ end
 
 _G.globalTarget = nil
 game:GetService("RunService").RenderStepped:Connect(function()
-    if _G.farm2 == true then
+    if _G.AutoFarm == true then
         local target = getNearest()
         if target and target:FindFirstChild("Head") then
             game:GetService("Workspace").CurrentCamera.CFrame = CFrame.new(game:GetService("Workspace").CurrentCamera.CFrame.p, target.Head.Position)
             Player.Character.HumanoidRootPart.CFrame =
-            (target.HumanoidRootPart.CFrame * CFrame.new(0, _G.groundDistance, 9))
+            (target.HumanoidRootPart.CFrame * CFrame.new(0, _G.GroundDistance, 9))
             _G.globalTarget = target
         end
     end
 end)
 
-spawn(function() -- Player Velocity
+spawn(function()
     while wait() do
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
         game.Players.LocalPlayer.Character.Torso.Velocity = Vector3.new(0,0,0)
     end
 end)
 
-while wait() do -- _G. == true and _G. ~= nil (zombie) FindFirstChild Head (Zombie)
-    if _G.farm2 == true and _G.globalTarget ~= nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool") then -- Script
-        local target = _G.globalTarget -- _G.
-        game.ReplicatedStorage.Gun:FireServer({ -- Event
-            ["Normal"] = Vector3.new(0, 0, 0), -- Vector3
-            ["Direction"] = target.Head.Position, -- Position
-            ["Name"] = Player.Character:FindFirstChildOfClass("Tool").Name, -- Tool Player
-            ["Hit"] = target.Head, -- HeadShot
-            ["Origin"] = target.Head.Position, -- Position Head
-            ["Pos"] = target.Head.Position, -- Position Head
-        }) -- close
-        wait() -- wait
+while wait() do
+    if _G.AutoFarm == true and _G.globalTarget ~= nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool") then
+        local target = _G.globalTarget
+        game.ReplicatedStorage.Gun:FireServer({
+            ["Normal"] = Vector3.new(0, 0, 0),
+            ["Direction"] = target.Head.Position,
+            ["Name"] = Player.Character:FindFirstChildOfClass("Tool").Name,
+            ["Hit"] = target.Head,
+            ["Origin"] = target.Head.Position,
+            ["Pos"] = target.Head.Position,
+        })
+        wait()
   end
  end
 end
