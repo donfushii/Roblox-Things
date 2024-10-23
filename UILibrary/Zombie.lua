@@ -9,32 +9,33 @@ Copyright (C) 2024 github.com/donfushii
 local ImperiumLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/donfushii/Roblox-Things/main/UILibrary/Imperium"))()
 
 local Windows = ImperiumLib:Window("Imperium", Color3.fromRGB(245, 102, 154), Enum.KeyCode.V) -- 44, 120, 224 -- Default Colour --
-local uiContainer = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChildOfClass("Imperium")
 ImperiumLib:Notification("Notification", "Welcome to Imperium. Thanks for using my HUB, Soon we will bring more.", "Okay!")
 
--- [ NUEVO BOTÓN FLOTANTE ] --
-
 local ScreenGui = Instance.new("ScreenGui")
-local ImperiumButton = Instance.new("TextButton")
+local ToggleButton = Instance.new("TextButton")
 
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false -- Evita que el GUI se reinicie al reaparecer
 
-ImperiumButton.Parent = ScreenGui
-ImperiumButton.BackgroundColor3 = Color3.fromRGB(245, 102, 154)
-ImperiumButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ImperiumButton.Size = UDim2.new(0, 30, 0, 30) -- Tamaño del botón
-ImperiumButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
-ImperiumButton.Text = "UI"
-ImperiumButton.TextScaled = true
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(44, 120, 224) -- Color del botón
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Color del texto
+ToggleButton.Size = UDim2.new(0, 50, 0, 50) -- Tamaño del botón
+ToggleButton.Position = UDim2.new(0, 10, 0.5, -25) -- Costado izquierdo
+ToggleButton.Text = "Show UI"
+ToggleButton.TextScaled = true -- Ajustar el texto al tamaño del botón
 
 -- [ FUNCIÓN DE MOSTRAR / OCULTAR UI ] --
-local isVisible = true
+local isVisible = true -- Estado inicial de visibilidad
 
-ImperiumButton.MouseButton1Click:Connect(function()
-    isVisible = not isVisible
-    uiContainer.Enabled = isVisible -- Oculta o muestra todo el GUI contenedor
+-- [ REFERENCIA AL GUI PRINCIPAL ] --
+local uiContainer = Windows -- Aquí se usa la referencia directa a la ventana creada por ImperiumLib
 
+ToggleButton.MouseButton1Click:Connect(function()
+    isVisible = not isVisible -- Cambiar estado
+    uiContainer.Enabled = isVisible -- Ocultar o mostrar la UI
+
+    -- Cambiar el texto del botón según el estado
     if isVisible then
         ToggleButton.Text = "Hide UI"
     else
